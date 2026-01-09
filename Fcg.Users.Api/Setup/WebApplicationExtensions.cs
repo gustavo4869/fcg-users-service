@@ -3,6 +3,7 @@ using Domain.Enum;
 using Domain.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Prometheus;
 using System.Text.Json;
 using TechChallengeAPI.Endpoints;
@@ -17,7 +18,29 @@ namespace TechChallengeAPI.Setup
         {
             app.UseMiddleware<ErrorMiddleware>();
             app.UseMiddleware<RequestLoggingMiddleware>();
-            app.UseSwagger();
+            app.UseSwagger(c =>
+            {
+                c.PreSerializeFilters.Add((swagger, httpReq) =>
+                {
+                    var prefix = httpReq.Headers["X-Forwarded-Prefix"].FirstOrDefault();
+
+                    if (!string.IsNullOrWhiteSpace(prefix))
+                    {
+                        swagger.Servers = new List<OpenApiServer>
+                        {
+                            new() { Url = prefix }
+                        };
+                    }
+                    else
+                    {
+                        // Acesso direto (sem gateway): mantém raiz
+                        swagger.Servers = new List<OpenApiServer>
+                        {
+                            new() { Url = "/" }
+                        };
+                    }
+                });
+            }); ;
             app.UseSwaggerUI(opt =>
             {
                 opt.SwaggerEndpoint("v1/swagger.json", "FIAP Cloud Games v1");
@@ -40,7 +63,8 @@ namespace TechChallengeAPI.Setup
                     var payload = new
                     {
                         status = report.Status.ToString(),
-                        checks = report.Entries.Select(kvp => new {
+                        checks = report.Entries.Select(kvp => new
+                        {
                             name = kvp.Key,
                             status = kvp.Value.Status.ToString(),
                             error = kvp.Value.Exception?.Message
