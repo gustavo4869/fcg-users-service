@@ -1,7 +1,9 @@
 ﻿using Application.Auth.Provider;
 using Application.Usuarios.Validator;
 using Fcg.Users.Api.Infra.Repository;
+using Fcg.Users.Api.Setup;
 using FluentValidation;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -19,6 +21,9 @@ namespace TechChallengeAPI.Setup
     {
         public static IServiceCollection AddApiCore(this IServiceCollection services, IConfiguration cfg)
         {
+            services.AddApplicationInsightsTelemetry();
+            services.AddSingleton<ITelemetryInitializer>(new CloudRoleNameTelemetryInitializer("fcg-users"));
+
             var connectionString = cfg.GetConnectionString("DefaultConnection") ?? "Data Source=fcg.db";
 
             services.AddDbContext<UserDbContext>(o => o.UseSqlite(connectionString));
