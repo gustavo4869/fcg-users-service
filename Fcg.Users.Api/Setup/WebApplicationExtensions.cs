@@ -19,10 +19,7 @@ namespace TechChallengeAPI.Setup
         {
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
-                ForwardedHeaders =
-                ForwardedHeaders.XForwardedFor |
-                ForwardedHeaders.XForwardedHost |
-                ForwardedHeaders.XForwardedProto,
+                ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto,
                 KnownNetworks = { },
                 KnownProxies = { }
             });
@@ -33,14 +30,17 @@ namespace TechChallengeAPI.Setup
             {
                 c.PreSerializeFilters.Add((swagger, httpReq) =>
                 {
-                    var prefix = httpReq.Headers["X-Forwarded-Prefix"].FirstOrDefault() ?? "";
+                    var proto = httpReq.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? httpReq.Scheme;
+                    var host = httpReq.Headers["X-Forwarded-Host"].FirstOrDefault() ?? httpReq.Host.Value;
 
-                    // após UseForwardedHeaders, httpReq.Scheme e httpReq.Host tendem a refletir o gateway
-                    var baseUrl = $"{httpReq.Scheme}://{httpReq.Host.Value}{prefix}";
+                    var basePath = app.Configuration["ReverseProxyBasePath"] ?? "";
+                    // garante "/users" (sem barra duplicada)
+                    if (!string.IsNullOrWhiteSpace(basePath) && !basePath.StartsWith("/"))
+                        basePath = "/" + basePath;
 
-                    swagger.Servers = new List<OpenApiServer>
+                    swagger.Servers = new List<Microsoft.OpenApi.Models.OpenApiServer>
                     {
-                        new() { Url = baseUrl }
+                        new() { Url = $"{proto}://{host}{basePath}" }
                     };
                 });
             });
