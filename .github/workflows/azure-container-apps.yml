@@ -71,7 +71,7 @@ jobs:
               Logging__LogLevel__Default=Information \
               Logging__LogLevel__Microsoft.AspNetCore=Warning \
               AllowedHosts=* \
-              Jwt__Key=secretref:jwt-key
+              Jwt__Key=${{ secrets.JWT_KEY }}
 
     - name: Get Container App URL
       uses: azure/CLI@v1
