@@ -30,7 +30,8 @@ namespace TechChallengeAPI.Endpoints
             .Produces<AuthResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .WithSummary("Autentica usuário")
-            .WithDescription("Valida credenciais e retorna um JWT (claims: sub, email, role, exp).");
+            .WithDescription("Valida credenciais e retorna um JWT (claims: sub, email, role, exp).")
+            .AllowAnonymous();
 
             return app;
         }
