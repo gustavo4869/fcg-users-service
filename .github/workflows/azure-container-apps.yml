@@ -80,7 +80,7 @@ jobs:
               ApplicationInsights__EnableAdaptiveSampling=false \
               ApplicationInsights__EnablePerformanceCounterCollectionModule=true \
               ApplicationInsights__EnableDependencyTrackingTelemetryModule=true \
-              Jwt__Key=secretref:jwt-key
+              Jwt__Key=${{ secrets.JWT_KEY }}
 
     - name: Verify Application Insights Configuration
       uses: azure/CLI@v1
