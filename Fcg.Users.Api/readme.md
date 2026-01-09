@@ -1,48 +1,48 @@
-# FIAP Cloud Games - Servi�o de Usu�rios
+﻿# FIAP Cloud Games - Serviço de Usuários
 
-> **MVP � Microsservi�o de Cadastro e Autentica��o de Usu�rios**
+> **MVP – Microsserviço de Cadastro e Autenticação de Usuários**
 
-API RESTful desenvolvida em **.NET 10** para gerenciamento de usu�rios com autentica��o JWT, seguindo princ�pios de Clean Architecture e Domain-Driven Design (DDD).
+API RESTful desenvolvida em **.NET 10** para gerenciamento de usuários com autenticação JWT, seguindo princípios de Clean Architecture e Domain-Driven Design (DDD).
 
 ---
 
-## ?? Sum�rio
+## 📋 Sumário
 
-- [Vis�o Geral](#-vis�o-geral)
+- [Visão Geral](#-visão-geral)
 - [Arquitetura](#-arquitetura)
 - [Tecnologias](#-tecnologias)
 - [Funcionalidades](#-funcionalidades)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Fluxo de Comunica��o](#-fluxo-de-comunica��o)
-- [Pr�-requisitos](#-pr�-requisitos)
-- [Instala��o e Execu��o](#-instala��o-e-execu��o)
+- [Fluxo de Comunicação](#-fluxo-de-comunicação)
+- [Pré-requisitos](#-pré-requisitos)
+- [Instalação e Execução](#-instalação-e-execução)
 - [Endpoints da API](#-endpoints-da-api)
-- [Autentica��o e Autoriza��o](#-autentica��o-e-autoriza��o)
+- [Autenticação e Autorização](#-autenticação-e-autorização)
 - [Docker](#-docker)
 - [Health Checks](#-health-checks)
 - [Event Sourcing](#-event-sourcing)
-- [Vari�veis de Ambiente](#-vari�veis-de-ambiente)
-- [Valida��es](#-valida��es)
-- [Seguran�a](#-seguran�a)
+- [Variáveis de Ambiente](#-variáveis-de-ambiente)
+- [Validações](#-validações)
+- [Segurança](#-segurança)
 - [Contribuindo](#-contribuindo)
 
 ---
 
-## ?? Vis�o Geral
+## 🎯 Visão Geral
 
-O **FCG Users Service** � um microsservi�o respons�vel pelo gerenciamento completo do ciclo de vida de usu�rios na plataforma FIAP Cloud Games. Este servi�o oferece:
+O **FCG Users Service** é um microsserviço responsável pelo gerenciamento completo do ciclo de vida de usuários na plataforma FIAP Cloud Games. Este serviço oferece:
 
-- ? Cadastro de usu�rios com valida��o robusta
-- ?? Autentica��o via JWT (JSON Web Tokens)
-- ?? Gerenciamento de n�veis de acesso (Usu�rio e Administrador)
-- ?? Health checks para monitoramento
-- ?? Criptografia de senhas com BCrypt
-- ?? Logging estruturado com correla��o de requisi��es
-- ?? Event Sourcing para auditoria
+- ✅ Cadastro de usuários com validação robusta
+- 🔐 Autenticação via JWT (JSON Web Tokens)
+- 👥 Gerenciamento de níveis de acesso (Usuário e Administrador)
+- 📊 Health checks para monitoramento
+- 🔒 Criptografia de senhas com BCrypt
+- 📝 Logging estruturado com correlação de requisições
+- 🎯 Event Sourcing para auditoria
 
 ---
 
-## ??? Arquitetura
+## 🏗️ Arquitetura
 
 ### Diagrama de Arquitetura do Sistema
 
@@ -177,120 +177,120 @@ graph LR
 
 ---
 
-## ??? Tecnologias
+## 🛠️ Tecnologias
 
-| Categoria | Tecnologia | Vers�o |
+| Categoria | Tecnologia | Versão |
 |-----------|-----------|--------|
 | **Framework** | .NET | 10.0 |
 | **API** | ASP.NET Core Minimal APIs | 10.0 |
 | **Database** | SQLite | - |
 | **ORM** | Entity Framework Core | 10.0 |
-| **Autentica��o** | JWT Bearer | - |
-| **Valida��o** | FluentValidation | 11.x |
-| **Documenta��o** | Swagger/OpenAPI | 3.0 |
+| **Autenticação** | JWT Bearer | - |
+| **Validação** | FluentValidation | 11.x |
+| **Documentação** | Swagger/OpenAPI | 3.0 |
 | **Hashing** | BCrypt.Net | - |
 | **Container** | Docker | - |
 | **Logging** | Microsoft.Extensions.Logging | - |
 
 ---
 
-## ? Funcionalidades
+## ⚡ Funcionalidades
 
-### M�dulo de Autentica��o
-- ?? Login com email/senha
-- ?? Gera��o de JWT com claims personalizadas
-- ? Tokens com expira��o configur�vel (padr�o: 60 minutos)
+### Módulo de Autenticação
+- 🔑 Login com email/senha
+- 🎫 Geração de JWT com claims personalizadas
+- ⏰ Tokens com expiração configurável (padrão: 60 minutos)
 
-### M�dulo de Usu�rios
-- ? Cadastro de novos usu�rios
-- ?? Consulta de usu�rios (Admin only)
-- ?? Atualiza��o de dados (Admin only)
-- ? Exclus�o de usu�rios (Admin only)
-- ??? Prote��o contra auto-exclus�o
+### Módulo de Usuários
+- ➕ Cadastro de novos usuários
+- 🔍 Consulta de usuários (Admin only)
+- ✏️ Atualização de dados (Admin only)
+- ❌ Exclusão de usuários (Admin only)
+- 🛡️ Proteção contra auto-exclusão
 
-### Recursos Avan�ados
-- ?? Health checks (live + ready)
-- ?? Logging estruturado com mascaramento de dados sens�veis
-- ?? Correlation ID para rastreamento de requisi��es
-- ?? Event Sourcing para auditoria
-- ?? Tratamento global de erros (RFC 7807)
+### Recursos Avançados
+- 📊 Health checks (live + ready)
+- 📝 Logging estruturado com mascaramento de dados sensíveis
+- 🔄 Correlation ID para rastreamento de requisições
+- 🎯 Event Sourcing para auditoria
+- 🚫 Tratamento global de erros (RFC 7807)
 
 ---
 
-## ?? Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 Fcg.Users.Api/
-??? Api/
-?   ??? Endpoints/
-?   ?   ??? AuthEndpoints.cs          # Endpoints de autentica��o
-?   ?   ??? UsuariosEndpoints.cs      # Endpoints de usu�rios
-?   ?   ??? ValidationFilter.cs        # Filtro de valida��o
-?   ??? Middleware/
-?       ??? ErrorMiddleware.cs         # Tratamento de erros global
-?       ??? RequestLoggingMiddleware.cs # Logging de requisi��es
-?
-??? Application/
-?   ??? Auth/
-?   ?   ??? Provider/
-?   ?   ?   ??? IJwtProvider.cs        # Interface JWT
-?   ?   ?   ??? JwtProvider.cs         # Implementa��o JWT
-?   ?   ??? Request/
-?   ?   ?   ??? LoginRequest.cs        # DTO de login
-?   ?   ??? Response/
-?   ?       ??? AuthResponse.cs        # DTO de resposta JWT
-?   ??? Usuarios/
-?       ??? Request/
-?       ?   ??? CriarUsuarioRequest.cs
-?       ?   ??? AtualizarUsuarioRequest.cs
-?       ??? Response/
-?       ?   ??? UsuarioResponse.cs
-?       ?   ??? UsuarioCriadoResponse.cs
-?       ??? Validator/
-?           ??? CriarUsuarioValidator.cs
-?           ??? AtualizarUsuarioValidator.cs
-?
-??? Domain/
-?   ??? Entidades/
-?   ?   ??? Usuario.cs                 # Entidade de dom�nio
-?   ??? Enum/
-?   ?   ??? NivelAcessoEnum.cs         # Enum de n�veis de acesso
-?   ??? Shared/
-?       ??? EmailStruct.cs             # Value Object Email
-?       ??? SenhaHashed.cs             # Value Object Senha
-?
-??? Infra/
-?   ??? Configs/
-?   ?   ??? UsuarioConfig.cs           # Configura��o EF Core
-?   ?   ??? EventEntityConfig.cs       # Configura��o Event Store
-?   ??? Events/
-?   ?   ??? EventEntity.cs             # Entidade de evento
-?   ?   ??? IEventStore.cs             # Interface Event Store
-?   ??? Repository/
-?   ?   ??? IUsuarioRepository.cs      # Interface do reposit�rio
-?   ?   ??? UsuarioRepository.cs       # Implementa��o
-?   ??? UserDbContext.cs               # Contexto EF Core
-?   ??? Migrations/                    # Migra��es do banco
-?
-??? Setup/
-?   ??? ServiceCollectionExtensions.cs # Configura��o DI
-?   ??? WebApplicationExtensions.cs    # Configura��o Pipeline
-?
-??? Contratos/
-?   ??? Responses/
-?       ??? CommonResponses.cs         # Respostas comuns
-?
-??? Program.cs                         # Entry point
-??? appsettings.json                   # Configura��es
-??? Dockerfile                         # Container Docker
-??? Fcg.Users.Api.csproj              # Projeto .NET
+├── Api/
+│   ├── Endpoints/
+│   │   ├── AuthEndpoints.cs          # Endpoints de autenticação
+│   │   ├── UsuariosEndpoints.cs      # Endpoints de usuários
+│   │   └── ValidationFilter.cs        # Filtro de validação
+│   └── Middleware/
+│       ├── ErrorMiddleware.cs         # Tratamento de erros global
+│       └── RequestLoggingMiddleware.cs # Logging de requisições
+│
+├── Application/
+│   ├── Auth/
+│   │   ├── Provider/
+│   │   │   ├── IJwtProvider.cs        # Interface JWT
+│   │   │   └── JwtProvider.cs         # Implementação JWT
+│   │   ├── Request/
+│   │   │   └── LoginRequest.cs        # DTO de login
+│   │   └── Response/
+│   │       └── AuthResponse.cs        # DTO de resposta JWT
+│   └── Usuarios/
+│       ├── Request/
+│       │   ├── CriarUsuarioRequest.cs
+│       │   └── AtualizarUsuarioRequest.cs
+│       ├── Response/
+│       │   ├── UsuarioResponse.cs
+│       │   └── UsuarioCriadoResponse.cs
+│       └── Validator/
+│           ├── CriarUsuarioValidator.cs
+│           └── AtualizarUsuarioValidator.cs
+│
+├── Domain/
+│   ├── Entidades/
+│   │   └── Usuario.cs                 # Entidade de domínio
+│   ├── Enum/
+│   │   └── NivelAcessoEnum.cs         # Enum de níveis de acesso
+│   └── Shared/
+│       ├── EmailStruct.cs             # Value Object Email
+│       └── SenhaHashed.cs             # Value Object Senha
+│
+├── Infra/
+│   ├── Configs/
+│   │   ├── UsuarioConfig.cs           # Configuração EF Core
+│   │   └── EventEntityConfig.cs       # Configuração Event Store
+│   ├── Events/
+│   │   ├── EventEntity.cs             # Entidade de evento
+│   │   └── IEventStore.cs             # Interface Event Store
+│   ├── Repository/
+│   │   ├── IUsuarioRepository.cs      # Interface do repositório
+│   │   └── UsuarioRepository.cs       # Implementação
+│   ├── UserDbContext.cs               # Contexto EF Core
+│   └── Migrations/                    # Migrações do banco
+│
+├── Setup/
+│   ├── ServiceCollectionExtensions.cs # Configuração DI
+│   └── WebApplicationExtensions.cs    # Configuração Pipeline
+│
+├── Contratos/
+│   └── Responses/
+│       └── CommonResponses.cs         # Respostas comuns
+│
+├── Program.cs                         # Entry point
+├── appsettings.json                   # Configurações
+├── Dockerfile                         # Container Docker
+└── Fcg.Users.Api.csproj              # Projeto .NET
 ```
 
 ---
 
-## ?? Fluxo de Comunica��o
+## 🔄 Fluxo de Comunicação
 
-### Fluxo de Autentica��o (Login)
+### Fluxo de Autenticação (Login)
 
 ```mermaid
 sequenceDiagram
@@ -308,16 +308,16 @@ sequenceDiagram
     DB-->>Repo: Usuario | null
     Repo-->>Auth: Usuario | null
     
-    alt Usu�rio n�o encontrado ou senha inv�lida
+    alt Usuário não encontrado ou senha inválida
         Auth-->>Client: 401 Unauthorized
-    else Credenciais v�lidas
+    else Credenciais válidas
         Auth->>JWT: Create(usuario)
         JWT-->>Auth: (token, expires)
         Auth-->>Client: 200 OK<br/>{token, expires, role}
     end
 ```
 
-### Fluxo de Cadastro de Usu�rio
+### Fluxo de Cadastro de Usuário
 
 ```mermaid
 sequenceDiagram
@@ -334,17 +334,17 @@ sequenceDiagram
     API->>Middleware: RequestLoggingMiddleware
     Middleware->>Validator: ValidationFilter<CriarUsuarioRequest>
     
-    alt Valida��o falha
+    alt Validação falha
         Validator-->>Client: 400 ValidationProblem
-    else Valida��o OK
+    else Validação OK
         Validator->>Endpoint: CriarUsuarioRequest
         Endpoint->>Repo: ExistsByEmailAsync(email)
         Repo->>DB: SELECT COUNT(*) WHERE Email = ?
         DB-->>Repo: true/false
         
-        alt Email j� existe
-            Endpoint-->>Client: 400 Bad Request<br/>{"E-mail j� cadastrado"}
-        else Email dispon�vel
+        alt Email já existe
+            Endpoint-->>Client: 400 Bad Request<br/>{"E-mail já cadastrado"}
+        else Email disponível
             Endpoint->>Endpoint: new Usuario(...)
             Endpoint->>Repo: AddAsync(usuario)
             Repo->>DB: INSERT INTO Usuarios
@@ -372,22 +372,22 @@ sequenceDiagram
     Client->>API: GET /api/v1/usuarios/{id}<br/>Authorization: Bearer {token}
     API->>JWT: Validate JWT Token
     
-    alt Token inv�lido/expirado
+    alt Token inválido/expirado
         JWT-->>Client: 401 Unauthorized
-    else Token v�lido
+    else Token válido
         JWT->>AuthZ: Check "AdminOnly" policy
         
-        alt N�o � Admin
+        alt Não é Admin
             AuthZ-->>Client: 403 Forbidden
-        else � Admin
+        else É Admin
             AuthZ->>Endpoint: GET Request
             Endpoint->>Repo: GetByIdAsync(id)
             Repo->>DB: SELECT * FROM Usuarios WHERE Id = ?
             DB-->>Repo: Usuario | null
             
-            alt Usu�rio n�o encontrado
+            alt Usuário não encontrado
                 Repo-->>Client: 404 Not Found
-            else Usu�rio encontrado
+            else Usuário encontrado
                 Repo-->>Endpoint: Usuario
                 Endpoint-->>Client: 200 OK<br/>{id, nome, email, role, dataCriacao}
             end
@@ -403,14 +403,14 @@ sequenceDiagram
     participant API as API Gateway
     participant ErrorMW as ErrorMiddleware
     participant Endpoint as Endpoint
-    participant Service as Servi�o
+    participant Service as Serviço
 
     Client->>API: Request
     API->>ErrorMW: InvokeAsync()
     ErrorMW->>Endpoint: next()
-    Endpoint->>Service: Opera��o
+    Endpoint->>Service: Operação
     
-    alt Exce��o ocorre
+    alt Exceção ocorre
         Service-->>Endpoint: throw Exception
         Endpoint-->>ErrorMW: Exception
         ErrorMW->>ErrorMW: Log error
@@ -425,63 +425,63 @@ sequenceDiagram
 
 ---
 
-## ?? Pr�-requisitos
+## 📋 Pré-requisitos
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- [Docker](https://www.docker.com/get-started) (opcional, para containeriza��o)
+- [Docker](https://www.docker.com/get-started) (opcional, para containerização)
 - [Visual Studio 2022+](https://visualstudio.microsoft.com/) ou [VS Code](https://code.visualstudio.com/)
 
 ---
 
-## ?? Instala��o e Execu��o
+## 🚀 Instalação e Execução
 
 ### Modo Desenvolvimento (Local)
 
-1. **Clone o reposit�rio:**
+1. **Clone o repositório:**
    ```bash
    git clone https://github.com/gustavo4869/fcg-users-service.git
    cd fcg-users-service
    ```
 
-2. **Restaure as depend�ncias:**
+2. **Restaure as dependências:**
    ```bash
    dotnet restore
    ```
 
-3. **Aplique as migra��es do banco de dados:**
+3. **Aplique as migrações do banco de dados:**
    ```bash
    cd Fcg.Users.Api
    dotnet ef database update
    ```
 
-4. **Execute a aplica��o:**
+4. **Execute a aplicação:**
    ```bash
    dotnet run
    ```
 
-5. **Acesse a documenta��o Swagger:**
+5. **Acesse a documentação Swagger:**
    ```
    https://localhost:8081/swagger
    ```
 
-### Usu�rio Padr�o (Desenvolvimento)
+### Usuário Padrão (Desenvolvimento)
 
-Em ambiente de desenvolvimento, um usu�rio administrador � criado automaticamente:
+Em ambiente de desenvolvimento, um usuário administrador é criado automaticamente:
 
 - **Email:** `admin@fcg.com`
 - **Senha:** `Admin@123`
-- **N�vel:** Administrador
+- **Nível:** Administrador
 
 ---
 
-## ?? Endpoints da API
+## 📡 Endpoints da API
 
 ### Base URL
 ```
 https://localhost:8081/api/v1
 ```
 
-### Autentica��o
+### Autenticação
 
 #### Login
 ```http
@@ -505,15 +505,15 @@ Content-Type: application/json
 
 ---
 
-### Usu�rios
+### Usuários
 
-#### Criar Usu�rio
+#### Criar Usuário
 ```http
 POST /usuarios
 Content-Type: application/json
 
 {
-  "nome": "Jo�o Silva",
+  "nome": "João Silva",
   "email": "joao.silva@email.com",
   "senha": "Senha@123",
   "nivelAcesso": "usuario"
@@ -524,13 +524,13 @@ Content-Type: application/json
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "nome": "Jo�o Silva",
+  "nome": "João Silva",
   "email": "joao.silva@email.com",
   "nivelAcesso": "Usuario"
 }
 ```
 
-#### Listar Usu�rios (Admin)
+#### Listar Usuários (Admin)
 ```http
 GET /usuarios
 Authorization: Bearer {token}
@@ -541,7 +541,7 @@ Authorization: Bearer {token}
 [
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "nome": "Jo�o Silva",
+    "nome": "João Silva",
     "email": "joao.silva@email.com",
     "nivelAcesso": "Usuario",
     "dataCriacao": "2026-01-09T10:00:00Z"
@@ -549,26 +549,26 @@ Authorization: Bearer {token}
 ]
 ```
 
-#### Buscar Usu�rio por ID (Admin)
+#### Buscar Usuário por ID (Admin)
 ```http
 GET /usuarios/{id}
 Authorization: Bearer {token}
 ```
 
-#### Atualizar Usu�rio (Admin)
+#### Atualizar Usuário (Admin)
 ```http
 PUT /usuarios/{id}
 Authorization: Bearer {token}
 Content-Type: application/json
 
 {
-  "nome": "Jo�o Silva Jr.",
+  "nome": "João Silva Jr.",
   "email": "joao.jr@email.com",
   "nivelAcesso": "admin"
 }
 ```
 
-#### Excluir Usu�rio (Admin)
+#### Excluir Usuário (Admin)
 ```http
 DELETE /usuarios/{id}
 Authorization: Bearer {token}
@@ -576,32 +576,32 @@ Authorization: Bearer {token}
 
 **Resposta (204 No Content)**
 
-**Prote��o:** N�o � poss�vel excluir o pr�prio usu�rio autenticado.
+**Proteção:** Não é possível excluir o próprio usuário autenticado.
 
 ---
 
-## ?? Autentica��o e Autoriza��o
+## 🔐 Autenticação e Autorização
 
 ### JWT Claims
 
 Os tokens JWT incluem as seguintes claims:
 
-| Claim | Descri��o | Exemplo |
+| Claim | Descrição | Exemplo |
 |-------|-----------|---------|
-| `sub` | ID do usu�rio | `3fa85f64-5717-4562-b3fc-2c963f66afa6` |
-| `email` | Email do usu�rio | `admin@fcg.com` |
-| `role` | Papel do usu�rio | `Admin` ou `User` |
-| `jti` | ID �nico do token | `7c9e6679-7425-40de-944b-e07fc1f90ae7` |
-| `exp` | Expira��o do token | `1736438400` |
+| `sub` | ID do usuário | `3fa85f64-5717-4562-b3fc-2c963f66afa6` |
+| `email` | Email do usuário | `admin@fcg.com` |
+| `role` | Papel do usuário | `Admin` ou `User` |
+| `jti` | ID único do token | `7c9e6679-7425-40de-944b-e07fc1f90ae7` |
+| `exp` | Expiração do token | `1736438400` |
 
-### N�veis de Acesso
+### Níveis de Acesso
 
-| N�vel | Valor | Permiss�es |
+| Nível | Valor | Permissões |
 |-------|-------|------------|
-| **Usuario** | `usuario` | Apenas cria��o de conta pr�pria |
-| **Administrador** | `admin` | CRUD completo de usu�rios |
+| **Usuario** | `usuario` | Apenas criação de conta própria |
+| **Administrador** | `admin` | CRUD completo de usuários |
 
-### Pol�ticas de Autoriza��o
+### Políticas de Autorização
 
 ```csharp
 [RequireAuthorization("AdminOnly")] // Apenas administradores
@@ -609,7 +609,7 @@ Os tokens JWT incluem as seguintes claims:
 
 ---
 
-## ?? Docker
+## 🐳 Docker
 
 ### Build da Imagem
 
@@ -657,9 +657,9 @@ services:
 
 ---
 
-## ?? Health Checks
+## 🏥 Health Checks
 
-### Endpoints de Sa�de
+### Endpoints de Saúde
 
 #### Liveness Probe
 ```http
@@ -710,9 +710,9 @@ readinessProbe:
 
 ---
 
-## ?? Event Sourcing
+## 📊 Event Sourcing
 
-O sistema implementa Event Sourcing para auditoria de eventos de dom�nio.
+O sistema implementa Event Sourcing para auditoria de eventos de domínio.
 
 ### Estrutura de Evento
 
@@ -720,10 +720,10 @@ O sistema implementa Event Sourcing para auditoria de eventos de dom�nio.
 public sealed class EventEntity
 {
     public Guid EventId { get; set; }
-    public Guid AggregateId { get; set; }        // ID do usu�rio
+    public Guid AggregateId { get; set; }        // ID do usuário
     public string EventType { get; set; }         // Tipo do evento
     public DateTime OccurredAt { get; set; }      // Timestamp
-    public int Version { get; set; }              // Vers�o do agregado
+    public int Version { get; set; }              // Versão do agregado
     public Guid? CorrelationId { get; set; }      // Rastreamento
     public string Payload { get; set; }           // Dados JSON
 }
@@ -738,15 +738,15 @@ public sealed class EventEntity
 
 ---
 
-## ?? Vari�veis de Ambiente
+## ⚙️ Variáveis de Ambiente
 
-| Vari�vel | Descri��o | Padr�o | Obrigat�rio |
+| Variável | Descrição | Padrão | Obrigatório |
 |----------|-----------|--------|-------------|
-| `ASPNETCORE_ENVIRONMENT` | Ambiente de execu��o | `Development` | N�o |
-| `Jwt__Key` | Chave secreta JWT (m�n. 32 bytes) | - | ? Sim |
-| `Jwt__Issuer` | Emissor do token | - | N�o |
-| `Jwt__Audience` | Audi�ncia do token | - | N�o |
-| `ConnectionStrings__DefaultConnection` | String de conex�o SQLite | `Data Source=fcg.db` | N�o |
+| `ASPNETCORE_ENVIRONMENT` | Ambiente de execução | `Development` | Não |
+| `Jwt__Key` | Chave secreta JWT (mín. 32 bytes) | - | ✅ Sim |
+| `Jwt__Issuer` | Emissor do token | - | Não |
+| `Jwt__Audience` | Audiência do token | - | Não |
+| `ConnectionStrings__DefaultConnection` | String de conexão SQLite | `Data Source=fcg.db` | Não |
 
 ### Exemplo de appsettings.json
 
@@ -770,105 +770,105 @@ public sealed class EventEntity
 
 ---
 
-## ? Valida��es
+## ✅ Validações
 
 ### Senha Forte
 
 A senha deve conter:
-- ? M�nimo 8 caracteres
-- ? Pelo menos uma letra (mai�scula ou min�scula)
-- ? Pelo menos um n�mero
-- ? Pelo menos um caractere especial
+- ✅ Mínimo 8 caracteres
+- ✅ Pelo menos uma letra (maiúscula ou minúscula)
+- ✅ Pelo menos um número
+- ✅ Pelo menos um caractere especial
 
-Exemplos v�lidos:
+Exemplos válidos:
 - `Senha@123`
 - `MyP@ssw0rd`
 - `Secure#2026`
 
 ### Email
 
-- ? Formato v�lido (regex: `^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$`)
-- ? Normalizado (lowercase)
-- ? �nico no sistema
+- ✅ Formato válido (regex: `^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$`)
+- ✅ Normalizado (lowercase)
+- ✅ Único no sistema
 
 ### Nome
 
-- ? N�o pode ser vazio
-- ? M�ximo 120 caracteres
+- ✅ Não pode ser vazio
+- ✅ Máximo 120 caracteres
 
 ---
 
-## ?? Seguran�a
+## 🔒 Segurança
 
-### Implementa��es de Seguran�a
+### Implementações de Segurança
 
 1. **Hashing de Senhas**
    - Algoritmo: BCrypt
-   - Salt autom�tico
-   - Verifica��o segura
+   - Salt automático
+   - Verificação segura
 
 2. **JWT Seguro**
    - Assinatura HMAC-SHA256
-   - Valida��o de chave m�nima (32 bytes)
+   - Validação de chave mínima (32 bytes)
    - Claims customizadas
 
-3. **Prote��o de Dados Sens�veis**
+3. **Proteção de Dados Sensíveis**
    - Mascaramento de senhas nos logs
-   - N�o exposi��o de hashes em respostas
-   - HTTPS obrigat�rio em produ��o
+   - Não exposição de hashes em respostas
+   - HTTPS obrigatório em produção
 
-4. **Valida��o de Entrada**
-   - FluentValidation em todas as requisi��es
-   - Sanitiza��o de emails
-   - Prote��o contra SQL Injection (EF Core)
+4. **Validação de Entrada**
+   - FluentValidation em todas as requisições
+   - Sanitização de emails
+   - Proteção contra SQL Injection (EF Core)
 
-5. **Pol�ticas de Autoriza��o**
+5. **Políticas de Autorização**
    - Role-based access control (RBAC)
-   - Prote��o de endpoints administrativos
-   - Preven��o de auto-exclus�o
+   - Proteção de endpoints administrativos
+   - Prevenção de auto-exclusão
 
 ---
 
-## ?? Contribuindo
+## 🤝 Contribuindo
 
-Contribui��es s�o bem-vindas! Por favor, siga estes passos:
+Contribuições são bem-vindas! Por favor, siga estes passos:
 
 1. Fork o projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudan�as (`git commit -m 'Add some AmazingFeature'`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-### Padr�es de C�digo
+### Padrões de Código
 
-- Siga os princ�pios SOLID
+- Siga os princípios SOLID
 - Mantenha a cobertura de testes
-- Documente APIs p�blicas
+- Documente APIs públicas
 - Use conventional commits
 
 ---
 
-## ?? Licen�a
+## 📄 Licença
 
-Este projeto est� sob a licen�a MIT. Veja o arquivo `LICENSE` para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
 ---
 
-## ?? Contato
+## 📞 Contato
 
 **FIAP Cloud Games Team**
 
-- Reposit�rio: [https://github.com/gustavo4869/fcg-users-service](https://github.com/gustavo4869/fcg-users-service)
+- Repositório: [https://github.com/gustavo4869/fcg-users-service](https://github.com/gustavo4869/fcg-users-service)
 - Issues: [https://github.com/gustavo4869/fcg-users-service/issues](https://github.com/gustavo4869/fcg-users-service/issues)
 
 ---
 
-## ?? Agradecimentos
+## 🙏 Agradecimentos
 
-- FIAP - Faculdade de Inform�tica e Administra��o Paulista
+- FIAP - Faculdade de Informática e Administração Paulista
 - Comunidade .NET Brasil
 - Todos os contribuidores do projeto
 
 ---
 
-**Desenvolvido com ?? usando .NET 10**
+**Desenvolvido com ❤️ usando .NET 10**
