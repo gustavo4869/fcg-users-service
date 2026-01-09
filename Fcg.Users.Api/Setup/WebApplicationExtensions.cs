@@ -2,6 +2,7 @@
 using Domain.Enum;
 using Domain.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Prometheus;
@@ -16,31 +17,34 @@ namespace TechChallengeAPI.Setup
     {
         public static WebApplication UseApiCore(this WebApplication app)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders =
+                ForwardedHeaders.XForwardedFor |
+                ForwardedHeaders.XForwardedHost |
+                ForwardedHeaders.XForwardedProto,
+                KnownNetworks = { },
+                KnownProxies = { }
+            });
+
             app.UseMiddleware<ErrorMiddleware>();
             app.UseMiddleware<RequestLoggingMiddleware>();
             app.UseSwagger(c =>
             {
                 c.PreSerializeFilters.Add((swagger, httpReq) =>
                 {
-                    var prefix = httpReq.Headers["X-Forwarded-Prefix"].FirstOrDefault();
+                    var prefix = httpReq.Headers["X-Forwarded-Prefix"].FirstOrDefault() ?? "";
 
-                    if (!string.IsNullOrWhiteSpace(prefix))
+                    // após UseForwardedHeaders, httpReq.Scheme e httpReq.Host tendem a refletir o gateway
+                    var baseUrl = $"{httpReq.Scheme}://{httpReq.Host.Value}{prefix}";
+
+                    swagger.Servers = new List<OpenApiServer>
                     {
-                        swagger.Servers = new List<OpenApiServer>
-                        {
-                            new() { Url = prefix }
-                        };
-                    }
-                    else
-                    {
-                        // Acesso direto (sem gateway): mantém raiz
-                        swagger.Servers = new List<OpenApiServer>
-                        {
-                            new() { Url = "/" }
-                        };
-                    }
+                        new() { Url = baseUrl }
+                    };
                 });
-            }); ;
+            });
+
             app.UseSwaggerUI(opt =>
             {
                 opt.SwaggerEndpoint("v1/swagger.json", "FIAP Cloud Games v1");
@@ -94,20 +98,17 @@ namespace TechChallengeAPI.Setup
 
             db.Database.Migrate();
 
-            if (app.Environment.IsDevelopment())
+            var adminEmail = EmailStruct.Create("admin@fcg.com");
+            var existeAdmin = db.Usuarios.Any(u => u.Email == adminEmail);
+            if (!existeAdmin)
             {
-                var adminEmail = EmailStruct.Create("admin@fcg.com");
-                var existeAdmin = db.Usuarios.Any(u => u.Email == adminEmail);
-                if (!existeAdmin)
-                {
-                    var admin = new Usuario(
-                        nome: "Admin",
-                        email: adminEmail,
-                        hash: SenhaHashed.FromPlain("Admin@123"),
-                        level: NivelAcessoEnum.Administrador);
-                    db.Usuarios.Add(admin);
-                    db.SaveChanges();
-                }
+                var admin = new Usuario(
+                    nome: "Admin",
+                    email: adminEmail,
+                    hash: SenhaHashed.FromPlain("Admin@123"),
+                    level: NivelAcessoEnum.Administrador);
+                db.Usuarios.Add(admin);
+                db.SaveChanges();
             }
         }
     }
