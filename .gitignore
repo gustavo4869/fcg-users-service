@@ -1,0 +1,58 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/Fcg.Users/config
+/.vs/Fcg.Users/CopilotIndices/18.0.934.24903
+/.vs/Fcg.Users/DesignTimeBuild
+/.vs/Fcg.Users/FileContentIndex
+/.vs/Fcg.Users/v18
+/Fcg.Users.Api/bin/Debug/net10.0
+/Fcg.Users.Api/obj
+/.vs
+
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+## Database
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+## Azure & Secrets - IMPORTANTE: Nunca commitar secrets!
+github-secrets*.txt
+github-secrets-*.txt
+azure-credentials.json
+*.publish.xml
+
+## Logs
+*.log
+
+## OS
+.DS_Store
+Thumbs.db
+/scripts/build-and-push.bat
+/scripts/check-azure-resources.ps1
+/scripts/build-and-push.sh
+/scripts/deploy.bat
+/scripts/deploy.sh
+/scripts/fix-azure-config.ps1
+/scripts/fix-push-blocked.ps1
+/scripts/logs.sh
+/scripts/register-and-setup-acr.ps1
+/scripts/rollback.sh
+/scripts/setup-acr-and-deploy.ps1
+/scripts/setup.ps1
+/scripts/setup.sh
+/scripts/validate-pre-deploy.ps1
+/scripts/README.md
