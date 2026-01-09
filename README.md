@@ -1,5 +1,10 @@
 # FIAP Cloud Games - Serviço de Usuários
 
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-purple)](https://dotnet.microsoft.com/)
+[![Azure Container Apps](https://img.shields.io/badge/Azure-Container%20Apps-blue)](https://azure.microsoft.com/services/container-apps/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Deploy Status](https://github.com/gustavo4869/fcg-users-service/actions/workflows/azure-container-apps.yml/badge.svg)](https://github.com/gustavo4869/fcg-users-service/actions)
+
 > **MVP – Microsserviço de Cadastro e Autenticação de Usuários**
 
 API RESTful desenvolvida em **.NET 10** para gerenciamento de usuários com autenticação JWT, seguindo princípios de Clean Architecture e Domain-Driven Design (DDD).
