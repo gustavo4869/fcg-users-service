@@ -24,7 +24,6 @@ API RESTful desenvolvida em **.NET 10** para gerenciamento de usuários com aute
 - [Variáveis de Ambiente](#-variáveis-de-ambiente)
 - [Validações](#-validações)
 - [Segurança](#-segurança)
-- [Contribuindo](#-contribuindo)
 
 ---
 
@@ -841,14 +840,6 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 - Repositório: [https://github.com/gustavo4869/fcg-users-service](https://github.com/gustavo4869/fcg-users-service)
 - Issues: [https://github.com/gustavo4869/fcg-users-service/issues](https://github.com/gustavo4869/fcg-users-service/issues)
-
----
-
-## 🙏 Agradecimentos
-
-- FIAP - Faculdade de Informática e Administração Paulista
-- Comunidade .NET Brasil
-- Todos os contribuidores do projeto
 
 ---
 
