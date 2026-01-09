@@ -77,7 +77,7 @@ jobs:
               ApplicationInsights__EnableAdaptiveSampling=false \
               ApplicationInsights__EnablePerformanceCounterCollectionModule=true \
               ApplicationInsights__EnableDependencyTrackingTelemetryModule=true \
-              Jwt__Key=secretref:jwt-key
+              Jwt__Key=${{ secrets.JWT_KEY }}
 
     - name: Get Container App URL
       uses: azure/CLI@v1
