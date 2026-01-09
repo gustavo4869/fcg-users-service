@@ -56,3 +56,6 @@ Thumbs.db
 /scripts/setup.sh
 /scripts/validate-pre-deploy.ps1
 /scripts/README.md
+/scripts
+/DOCKER_HUB_ALTERNATIVE.md
+/GITHUB_ACTIONS_SETUP.md
