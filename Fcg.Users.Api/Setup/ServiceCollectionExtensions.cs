@@ -21,12 +21,52 @@ namespace TechChallengeAPI.Setup
     {
         public static IServiceCollection AddApiCore(this IServiceCollection services, IConfiguration cfg)
         {
-            services.AddApplicationInsightsTelemetry();
-            services.AddSingleton<ITelemetryInitializer>(new CloudRoleNameTelemetryInitializer("fcg-users"));
+            // Application Insights - Configuração completa
+            var connectionString = cfg["ApplicationInsights:ConnectionString"] 
+                ?? cfg["APPLICATIONINSIGHTS_CONNECTION_STRING"];
 
-            var connectionString = cfg.GetConnectionString("DefaultConnection") ?? "Data Source=fcg.db";
+            if (!string.IsNullOrWhiteSpace(connectionString))
+            {
+                services.AddApplicationInsightsTelemetry(options =>
+                {
+                    options.ConnectionString = connectionString;
+                    
+                    // Controle de sampling
+                    options.EnableAdaptiveSampling = cfg.GetValue<bool>("ApplicationInsights:EnableAdaptiveSampling", true);
+                    
+                    // Coleta de performance counters (CPU, memória, etc)
+                    options.EnablePerformanceCounterCollectionModule = cfg.GetValue<bool>("ApplicationInsights:EnablePerformanceCounterCollectionModule", true);
+                    
+                    // Rastreamento de dependências (HTTP, SQL, etc)
+                    options.EnableDependencyTrackingTelemetryModule = cfg.GetValue<bool>("ApplicationInsights:EnableDependencyTrackingTelemetryModule", true);
+                    
+                    // Coleta de heartbeat para monitoramento de health
+                    options.EnableHeartbeat = true;
+                    
+                    // Coleta automática de requisições HTTP
+                    options.EnableRequestTrackingTelemetryModule = true;
+                    
+                    // Coleta de eventos de exceção
+                    options.EnableEventCounterCollectionModule = true;
+                });
+                
+                // Configurar TelemetryInitializer para nome da aplicação
+                services.AddSingleton<ITelemetryInitializer>(new CloudRoleNameTelemetryInitializer("fcg-users"));
+                
+                // Integrar ILogger com Application Insights
+                services.AddLogging(loggingBuilder =>
+                {
+                    loggingBuilder.AddApplicationInsights(
+                        configureTelemetryConfiguration: (config) => 
+                            config.ConnectionString = connectionString,
+                        configureApplicationInsightsLoggerOptions: (options) => { }
+                    );
+                });
+            }
+            
+            var connectionStringDb = cfg.GetConnectionString("DefaultConnection") ?? "Data Source=fcg.db";
 
-            services.AddDbContext<UserDbContext>(o => o.UseSqlite(connectionString));
+            services.AddDbContext<UserDbContext>(o => o.UseSqlite(connectionStringDb));
 
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IJwtProvider, JwtProvider>();
