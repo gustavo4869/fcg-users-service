@@ -62,6 +62,9 @@ jobs:
         inlineScript: |
           az config set extension.use_dynamic_install=yes_without_prompt
           
+          # Connection String do Application Insights
+          APPINSIGHTS_CONN="InstrumentationKey=f0c4439c-e3bb-4971-b133-46ee4e657f04;IngestionEndpoint=https://brazilsouth-1.in.applicationinsights.azure.com/;LiveEndpoint=https://brazilsouth.livediagnostics.monitor.azure.com/;ApplicationId=79c04893-3742-4314-9dcf-887da8509f65"
+          
           az containerapp update \
             --name ${{ env.CONTAINER_APP_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
@@ -73,11 +76,35 @@ jobs:
               Logging__ApplicationInsights__LogLevel__Default=Information \
               Logging__ApplicationInsights__LogLevel__Microsoft=Warning \
               AllowedHosts=* \
-              ApplicationInsights__ConnectionString="InstrumentationKey=f0c4439c-e3bb-4971-b133-46ee4e657f04;IngestionEndpoint=https://brazilsouth-1.in.applicationinsights.azure.com/;LiveEndpoint=https://brazilsouth.livediagnostics.monitor.azure.com/;ApplicationId=79c04893-3742-4314-9dcf-887da8509f65" \
+              "ApplicationInsights__ConnectionString=$APPINSIGHTS_CONN" \
               ApplicationInsights__EnableAdaptiveSampling=false \
               ApplicationInsights__EnablePerformanceCounterCollectionModule=true \
               ApplicationInsights__EnableDependencyTrackingTelemetryModule=true \
               Jwt__Key=${{ secrets.JWT_KEY }}
+
+    - name: Verify Application Insights Configuration
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          echo "?? Verificando configuração do Application Insights..."
+          
+          # Verificar variáveis de ambiente
+          az containerapp show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "properties.template.containers[0].env[?name=='ApplicationInsights__ConnectionString'].{name:name, value:value}" \
+            -o table
+          
+          echo ""
+          echo "? Aguardando 10 segundos para o container iniciar..."
+          sleep 10
+          
+          # Verificar logs recentes
+          echo "?? Logs recentes do container:"
+          az containerapp logs show \
+            --name ${{ env.CONTAINER_APP_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --tail 20 || true
 
     - name: Get Container App URL
       uses: azure/CLI@v1
@@ -88,7 +115,10 @@ jobs:
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --query properties.configuration.ingress.fqdn \
             -o tsv)
-          echo "?? Application deployed successfully!"
+          echo "? Application deployed successfully!"
           echo "?? URL: https://$URL"
           echo "?? Swagger: https://$URL/swagger"
           echo "?? Health: https://$URL/health"
+          echo ""
+          echo "?? Application Insights: https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/applicationInsights"
+          echo "??  Aguarde 2-5 minutos para os logs aparecerem no Application Insights"

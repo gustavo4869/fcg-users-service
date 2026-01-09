@@ -22,8 +22,25 @@ namespace TechChallengeAPI.Setup
         public static IServiceCollection AddApiCore(this IServiceCollection services, IConfiguration cfg)
         {
             // Application Insights - Configuração completa
-            var connectionString = cfg["ApplicationInsights:ConnectionString"] 
-                ?? cfg["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+            // Tentar múltiplos formatos de configuração (compatibilidade com diferentes ambientes)
+            var connectionString = cfg["ApplicationInsights:ConnectionString"]
+                ?? cfg["ApplicationInsights__ConnectionString"] 
+                ?? cfg["APPLICATIONINSIGHTS_CONNECTION_STRING"]
+                ?? Environment.GetEnvironmentVariable("ApplicationInsights__ConnectionString")
+                ?? Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
+
+            // Log de debug para diagnóstico (será enviado ao Application Insights quando configurado)
+            Console.WriteLine($"[DEBUG] Application Insights Connection String found: {!string.IsNullOrWhiteSpace(connectionString)}");
+            if (!string.IsNullOrWhiteSpace(connectionString))
+            {
+                Console.WriteLine($"[DEBUG] Connection String length: {connectionString.Length} characters");
+                Console.WriteLine($"[DEBUG] Contains InstrumentationKey: {connectionString.Contains("InstrumentationKey")}");
+            }
+            else
+            {
+                Console.WriteLine("[WARNING] Application Insights Connection String NOT FOUND - Telemetry disabled");
+                Console.WriteLine("[DEBUG] Checked keys: ApplicationInsights:ConnectionString, ApplicationInsights__ConnectionString, APPLICATIONINSIGHTS_CONNECTION_STRING");
+            }
 
             if (!string.IsNullOrWhiteSpace(connectionString))
             {
@@ -62,6 +79,8 @@ namespace TechChallengeAPI.Setup
                         configureApplicationInsightsLoggerOptions: (options) => { }
                     );
                 });
+                
+                Console.WriteLine("[SUCCESS] Application Insights configured successfully!");
             }
             
             var connectionStringDb = cfg.GetConnectionString("DefaultConnection") ?? "Data Source=fcg.db";
